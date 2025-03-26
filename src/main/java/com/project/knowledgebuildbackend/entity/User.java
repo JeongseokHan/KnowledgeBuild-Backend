@@ -29,7 +29,7 @@ public class User {
     @Column(name = "nickname", unique = true, nullable = false, length = 15)
     private String nickname;
 
-    @Column(name = "description", length = 50)
+    @Column(name = "description", length = 100)
     private String description; // 자기소개
 
     @Column(name = "profile_path", length = 50)
