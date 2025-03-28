@@ -1,6 +1,6 @@
 package com.project.knowledgebuildbackend.entity.composite;
 
-import com.project.knowledgebuildbackend.entity.Board;
+import com.project.knowledgebuildbackend.entity.Quiz;
 import com.project.knowledgebuildbackend.entity.User;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 @Embeddable
-public class BoardViewPK implements Serializable {
+public class QuizActivityPK implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sns_id", nullable = false, columnDefinition = "INT UNSIGNED")
@@ -28,6 +28,6 @@ public class BoardViewPK implements Serializable {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id", nullable = false, columnDefinition = "INT UNSIGNED")
-    private Board board;
+    @JoinColumn(name = "quiz_id", nullable = false, columnDefinition = "INT UNSIGNED")
+    private Quiz quiz;
 }

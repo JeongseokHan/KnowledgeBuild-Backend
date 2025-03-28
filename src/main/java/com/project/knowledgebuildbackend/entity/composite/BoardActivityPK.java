@@ -20,7 +20,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 @Embeddable
-public class BoardBookmarkPK implements Serializable {
+public class BoardActivityPK implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sns_id", nullable = false, columnDefinition = "INT UNSIGNED")

@@ -1,6 +1,6 @@
 package com.project.knowledgebuildbackend.entity;
 
-import com.project.knowledgebuildbackend.entity.composite.BoardViewPK;
+import com.project.knowledgebuildbackend.entity.composite.BoardActivityPK;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @DynamicInsert
 public class BoardView {
     @EmbeddedId
-    private BoardViewPK boardViewPK;
+    private BoardActivityPK boardActivityPK;
 
     @CreationTimestamp
     @Column(name = "created_time", nullable = false, columnDefinition = "DEFAULT CURRENT_TIMESTAMP")
