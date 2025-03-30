@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class BoardActivityPK implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sns_id", nullable = false, columnDefinition = "INT UNSIGNED")
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "INT UNSIGNED")
     private User user;
 
     @OnDelete(action = OnDeleteAction.CASCADE)

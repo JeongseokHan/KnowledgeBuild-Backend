@@ -21,7 +21,7 @@ public class BoardDraft {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sns_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User uploader;
 
     @ManyToOne(fetch = FetchType.LAZY)

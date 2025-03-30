@@ -15,6 +15,10 @@ import java.time.LocalDateTime;
 @DynamicInsert
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", unique = true, nullable = false, columnDefinition = "INT UNSIGNED AUTO_INCREMENT")
+    private Long userId;
+
     @Column(name = "sns_id", unique = true, nullable = false)
     private String snsId;
 
