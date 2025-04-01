@@ -1,10 +1,15 @@
 package com.project.knowledgebuildbackend.config;
 
-import com.project.knowledgebuildbackend.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.knowledgebuildbackend.filter.AuthenticationFilter;
+import com.project.knowledgebuildbackend.service.user.UserAuthService;
+import com.project.knowledgebuildbackend.util.JWT;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -14,13 +19,14 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Slf4j
 public class WebSecurityConfig {
-    private final UserService userService;
+    private final AuthenticationFilter authenticationFilter;
+    private final UserAuthService userAuthService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,7 +45,8 @@ public class WebSecurityConfig {
                         oauth2Login
                                 .successHandler(oAuth2LoginSuccessHandler())  // 성공 시 처리
                                 .failureHandler(oAuth2LoginFailureHandler())  // 실패 시 처리
-                );
+                )
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -49,7 +56,19 @@ public class WebSecurityConfig {
             try {
                 OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
                 String socialType = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
-                userService.userAuth(oAuth2User, socialType);
+                JWT token = userAuthService.userAuth(oAuth2User, socialType);
+
+                Cookie refreshTokenCookie = new Cookie("refreshToken", token.getRefreshToken());
+                refreshTokenCookie.setHttpOnly(true);
+                refreshTokenCookie.setPath("/");
+                refreshTokenCookie.setMaxAge(604800);
+                response.addCookie(refreshTokenCookie);
+
+                response.setStatus(HttpStatus.OK.value());
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                response.getWriter().write(new ObjectMapper().writeValueAsString(token.getAccessToken()));
             }
             catch (Exception e) {
                 log.info("성공 메소드, 에러 발생 : {}", e.getMessage());

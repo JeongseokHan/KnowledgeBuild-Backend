@@ -1,6 +1,7 @@
 package com.project.knowledgebuildbackend.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,7 +20,7 @@ public class User {
     @Column(name = "user_id", unique = true, nullable = false, columnDefinition = "INT UNSIGNED AUTO_INCREMENT")
     private Long userId;
 
-    @Column(name = "sns_id", unique = true, nullable = false)
+    @Column(name = "sns_id", unique = true, nullable = false, length = 50)
     private String snsId;
 
     /**
@@ -36,7 +37,7 @@ public class User {
     @Column(name = "description", length = 100)
     private String description; // 자기소개
 
-    @Column(name = "profile_path", length = 50)
+    @Column(name = "profile_path", length = 150)
     private String profilePath;
 
     @Column(name = "profile_type", length = 20)
